@@ -243,4 +243,39 @@ mysql> select PNAME,TNAME,AGE from TEAM, PLAYER where PLAYER.TID=TEAM.TID AND AG
 | kohli | daredevils |  23 |
 +-------+------------+-----+
 
+(ii)
+mysql> select SNAME from STADIUM where SID=(select SID from MATCHES group by SID order by COUNT(*) DESC limit 1);
++-------------+
+| SNAME       |
++-------------+
+| chinnaswamy |
++-------------+
+1 row in set (0.00 sec)
+
+//OR
+mysql> select * from STADIUM where SID=(select SID from MATCHES group by SID order by COUNT(SID) DESC limit 1);
++-----+-------------+---------+----------+--------+
+| SID | SNAME       | PINCODE | CITY     | AREA   |
++-----+-------------+---------+----------+--------+
+| 111 | chinnaswamy |   50001 | banglore | mgroad |
++-----+-------------+---------+----------+--------+
+
+//OR
+mysql> select * from STADIUM where SID=(select SID from MATCHES group by SID order by COUNT(*) DESC limit 1);
++-----+-------------+---------+----------+--------+
+| SID | SNAME       | PINCODE | CITY     | AREA   |
++-----+-------------+---------+----------+--------+
+| 111 | chinnaswamy |   50001 | banglore | mgroad |
++-----+-------------+---------+----------+--------+
+
+(iii)
+mysql> select * from PLAYER where PID NOT IN(select CAPTAIN_ID from TEAM) AND PID IN (select MAN_OF_MATCH from MATCHES group by MAN_OF_MATCH
+having count(MAN_OF_MATCH)=2);
++-----+-------+-----+------+
+| PID | PNAME | AGE | TID  |
++-----+-------+-----+------+
+| 5   | kohli |  23 | 126  |
++-----+-------+-----+------+
+1 row in set (0.00 sec)
+
 
