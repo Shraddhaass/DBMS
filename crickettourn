@@ -1,0 +1,191 @@
+Cricket
+mysql> DESC STADIUM;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| SID     | varchar(10) | NO   | PRI | NULL    |       |
+| SNAME   | varchar(20) | NO   |     | NULL    |       |
+| PINCODE | int         | NO   |     | NULL    |       |
+| CITY    | varchar(15) | NO   |     | NULL    |       |
+| AREA    | varchar(20) | NO   |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from STADIUM;
++-----+---------------+---------+----------+------------+
+| SID | SNAME         | PINCODE | CITY     | AREA       |
++-----+---------------+---------+----------+------------+
+| 111 | chinnaswamy   |   50001 | banglore | mgroad     |
+| 222 | Kotla         |   50001 | dehli    | highway    |
+| 333 | International |   88001 | chennai  | tr nagar   |
+| 444 | KSCA          |   50090 | banglore | peenya     |
+| 555 | CSCA          |    9035 | coachin  | beach road |
++-----+---------------+---------+----------+------------+
+5 rows in set (0.00 sec)
+
+
+create tables;
+
+mysql> DESC TEAM;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| TID        | varchar(10) | NO   | PRI | NULL    |       |
+| TNAME      | varchar(30) | NO   |     | NULL    |       |
+| COACH      | varchar(30) | NO   |     | NULL    |       |
+| CAPTAIN_ID | varchar(10) | YES  | MUL | NULL    |       |
+| CITY       | varchar(20) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+mysql> select * from TEAM;
++-----+------------+--------+------------+------------+
+| TID | TNAME      | COACH  | CAPTAIN_ID | CITY       |
++-----+------------+--------+------------+------------+
+| 123 | rcb        | sunil  | NULL       | banglore   |
+| 124 | CSK        | Laxman | NULL       | Chennai    |
+| 125 | dravid     | setwag | NULL       | delhi      |
+| 126 | daredevils | singh  | NULL       | rajasthyan |
++-----+------------+--------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> Update TEAM SET  CAPTAIN_ID="3" where TID="124";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> Update TEAM SET  CAPTAIN_ID="4" where TID="125";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> Update TEAM SET  CAPTAIN_ID="2" where TID="126";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> Update TEAM SET  CAPTAIN_ID="1" where TID="123";
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> select * from TEAM;
++-----+------------+--------+------------+------------+
+| TID | TNAME      | COACH  | CAPTAIN_ID | CITY       |
++-----+------------+--------+------------+------------+
+| 123 | rcb        | sunil  | 1          | banglore   |
+| 124 | CSK        | Laxman | 3          | Chennai    |
+| 125 | dravid     | setwag | 4          | delhi      |
+| 126 | daredevils | singh  | 2          | rajasthyan |
++-----+------------+--------+------------+------------+
+4 rows in set (0.00 sec)
+
+
+mysql> DESC PLAYER;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| PID   | varchar(10) | NO   | PRI | NULL    |       |
+| PNAME | varchar(20) | NO   |     | NULL    |       |
+| AGE   | int         | NO   |     | NULL    |       |
+| TID   | varchar(10) | YES  | MUL | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into PLAYER_PHONE values('1',99886754);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from PLAYER;
++-----+--------+-----+------+
+| PID | PNAME  | AGE | TID  |
++-----+--------+-----+------+
+| 1   | sachin |  33 | 123  |
+| 2   | dravid |  32 | 124  |
+| 3   | dhoni  |  30 | 125  |
+| 4   | raina  |  30 | 124  |
+| 5   | kohli  |  23 | 126  |
++-----+--------+-----+------+
+5 rows in set (0.00 sec)
+
+mysql> DESC PLAYER_PHONE;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| PID   | varchar(10) | NO   | MUL | NULL    |       |
+| PHONE | int         | NO   | PRI | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from PLAYER_PHONE;
++-----+----------+
+| PID | PHONE    |
++-----+----------+
+| 1   | 99886754 |
+| 2   | 99888671 |
+| 2   | 99888976 |
++-----+----------+
+
+mysql> DESC STADIUM;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| SID     | varchar(10) | NO   | PRI | NULL    |       |
+| SNAME   | varchar(20) | NO   |     | NULL    |       |
+| PINCODE | int         | NO   |     | NULL    |       |
+| CITY    | varchar(15) | NO   |     | NULL    |       |
+| AREA    | varchar(20) | NO   |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from STADIUM;
++-----+---------------+---------+----------+------------+
+| SID | SNAME         | PINCODE | CITY     | AREA       |
++-----+---------------+---------+----------+------------+
+| 111 | chinnaswamy   |   50001 | banglore | mgroad     |
+| 222 | Kotla         |   50001 | dehli    | highway    |
+| 333 | International |   88001 | chennai  | tr nagar   |
+| 444 | KSCA          |   50090 | banglore | peenya     |
+| 555 | CSCA          |    9035 | coachin  | beach road |
++-----+---------------+---------+----------+------------+
+5 rows in set (0.00 sec)
+
+
+mysql> insert into MATCHES values('1','2000-10-12','10','111','123','124','123','1');
+ERROR 1062 (23000): Duplicate entry '1' for key 'MATCHES.PRIMARY'
+mysql> insert into MATCHES values('102','2010-01-17','10','222','124','126','126','5');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into MATCHES values('103','2000-07-17','11','111','125','126','126','5');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into MATCHES values('104','2015-06-09','2pm','111','125','123','123','1');
+ERROR 1292 (22007): Incorrect time value: '2pm' for column 'TIME' at row 1
+mysql> insert into MATCHES values('104','2015-06-09','2','111','125','123','123','1');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from MATCHES;
++-----+------------+----------+-----+----------+----------+-----------------+--------------+
+| MID | MDATE      | TIME     | SID | TEAM1_ID | TEAM2_ID | WINNING_TEAM_ID | MAN_OF_MATCH |
++-----+------------+----------+-----+----------+----------+-----------------+--------------+
+| 1   | 2000-10-12 | 00:00:10 | 111 | 123      | 124      | 123             | 1            |
+| 102 | 2010-01-17 | 00:00:10 | 222 | 124      | 126      | 126             | 5            |
+| 103 | 2000-07-17 | 00:00:11 | 111 | 125      | 126      | 126             | 5            |
+| 104 | 2015-06-09 | 00:00:02 | 111 | 125      | 123      | 123             | 1            |
++-----+------------+----------+-----+----------+----------+-----------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> DESC MATCHES;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| MID             | varchar(10) | NO   | PRI | NULL    |       |
+| MDATE           | date        | NO   |     | NULL    |       |
+| TIME            | time        | NO   |     | NULL    |       |
+| SID             | varchar(10) | NO   | MUL | NULL    |       |
+| TEAM1_ID        | varchar(15) | NO   | MUL | NULL    |       |
+| TEAM2_ID        | varchar(15) | NO   | MUL | NULL    |       |
+| WINNING_TEAM_ID | varchar(10) | NO   | MUL | NULL    |       |
+| MAN_OF_MATCH    | varchar(20) | YES  | MUL | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+
+
+insert into PLAYER_PHONE values( );
+
+
