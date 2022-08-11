@@ -75,6 +75,20 @@ mysql> select * from TEAM;
 +-----+------------+--------+------------+------------+
 4 rows in set (0.00 sec)
 
+OR 
+mysql> update TEAM SET TNAME='KOhili' where TID='125';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from TEAM;
++-----+------------+--------+------------+------------+
+| TID | TNAME      | COACH  | CAPTAIN_ID | CITY       |
++-----+------------+--------+------------+------------+
+| 123 | rcb        | sunil  | 1          | banglore   |
+| 124 | CSK        | Laxman | 3          | Chennai    |
+| 125 | KOhili     | setwag | 4          | delhi      |
+| 126 | daredevils | singh  | 2          | rajasthyan |
++-----+------------+--------+------------+------------+
+4 rows in set (0.00 sec)
 
 mysql> DESC PLAYER;
 +-------+-------------+------+-----+---------+-------+
@@ -110,6 +124,10 @@ mysql> DESC PLAYER_PHONE;
 | PHONE | int         | NO   | PRI | NULL    |       |
 +-------+-------------+------+-----+---------+-------+
 2 rows in set (0.00 sec)
+
+
+mysql> insert into PLAYER_PHONE values('1',99886754);
+Query OK, 1 row affected (0.01 sec)
 
 mysql> select * from PLAYER_PHONE;
 +-----+----------+
