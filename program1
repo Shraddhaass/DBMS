@@ -1,0 +1,469 @@
+shraddha@shraddha-Inspiron-3593:~$ sudo mysql
+[sudo] password for shraddha: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.30-0ubuntu0.20.04.2 (Ubuntu)
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| student_details    |
+| sys                |
++--------------------+
+5 rows in set (0.24 sec)
+
+mysql> use databases student_details
+ERROR 1049 (42000): Unknown database 'databases'
+mysql> use database student_details
+ERROR 1049 (42000): Unknown database 'database'
+mysql> use student_details
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables
+    -> ;
++---------------------------+
+| Tables_in_student_details |
++---------------------------+
+| Author                    |
+| Book                      |
+| Book1                     |
+| Borrow                    |
+| Branch                    |
+| Student                   |
++---------------------------+
+6 rows in set (0.01 sec)
+
+mysql> DESc Author;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| Authorid   | varchar(20) | NO   | PRI | NULL    |       |
+| Authorname | varchar(10) | NO   |     | NULL    |       |
+| Country    | varchar(20) | YES  |     | NULL    |       |
+| age        | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> DESC Book;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Bookid    | varchar(10) | NO   | PRI | NULL    |       |
+| BookName  | varchar(20) | NO   |     | NULL    |       |
+| Authorid  | varchar(20) | NO   |     | NULL    |       |
+| Publisher | varchar(30) | NO   |     | NULL    |       |
+| branchid  | varchar(10) | YES  | MUL | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> DESC Borrow;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| USN           | varchar(20) | YES  | MUL | NULL    |       |
+| Bookid        | varchar(20) | YES  | MUL | NULL    |       |
+| Borrowed_date | date        | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESC Branch;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| branchid   | varchar(10) | NO   | PRI | NULL    |       |
+| Branchname | varchar(20) | NO   |     | NULL    |       |
+| HOD        | varchar(20) | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> DESC Student;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| USN      | varchar(20) | NO   | PRI | NULL    |       |
+| Name     | varchar(20) | NO   |     | NULL    |       |
+| Address  | varchar(20) | NO   |     | NULL    |       |
+| Branchid | varchar(20) | YES  | MUL | NULL    |       |
+| sem      | varchar(10) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Book;
+Empty set (0.00 sec)
+
+mysql> select * from Book1;
+Empty set (0.00 sec)
+
+mysql> select * from  Author;
+Empty set (0.00 sec)
+
+mysql> insert into Author values('1','Ramez Elamasri','Arlithon',51);
+ERROR 1406 (22001): Data too long for column 'Authorname' at row 1
+mysql> alter Author set modify Authorname varchar(20)NOT NULL;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Author set modify Authorname varchar(20)NOT NULL' at line 1
+mysql> alter Author modify Authorname varchar(20)NOT NULL;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Author modify Authorname varchar(20)NOT NULL' at line 1
+mysql> alter table Author modify Authorname varchar(20)NOT NULL;
+Query OK, 0 rows affected (0.60 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into Author values('1','Ramez Elamasri','Arlithon',51);
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into Author values('2','Baidyanath misthra','India',52);
+Query OK, 1 row affected (0.45 sec)
+
+mysql> insert into Author values('3','ellis howtz','India',43);
+Query OK, 1 row affected (1.09 sec)
+
+mysql> insert into Author values('4','Yunus','Japan',34);
+Query OK, 1 row affected (0.16 sec)
+
+mysql> select * from Author;
++----------+--------------------+----------+------+
+| Authorid | Authorname         | Country  | age  |
++----------+--------------------+----------+------+
+| 1        | Ramez Elamasri     | Arlithon |   51 |
+| 2        | Baidyanath misthra | India    |   52 |
+| 3        | ellis howtz        | India    |   43 |
+| 4        | Yunus              | Japan    |   34 |
++----------+--------------------+----------+------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Book values('BK1','DBMS','1','person','B1');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`student_details`.`Book`, CONSTRAINT `Book_ibfk_1` FOREIGN KEY (`branchid`) REFERENCES `Branch` (`branchid`))
+mysql> insert into Book values('BK1','DBMS','1','person');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher,Branchid)values('BK1','DBMS','1','person');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher)values('BK1','DBMS','1','person');
+Query OK, 1 row affected (0.44 sec)
+
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher)values('BK1','DBMS','1','person')
+    -> insert into Book(Bookid,BookName,Authorid,Publisher,Branchid)values('BK2','RMI','1','person');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into Book(Bookid,BookName,Authorid,Publisher,Branchid)values('BK2','RMI',' at line 2
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher)values('BK1','DBMS','1','person') insert into Book(Bookid,BookName,Authorid,Publisher)values('BK2','RMI','1','person');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into Book(Bookid,BookName,Authorid,Publisher)values('BK2','RMI','1','pers' at line 1
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher)values('BK1','DBMS','1','person');
+insert into Book(Bookid,BookName,Authorid,Publisher)values('BK1','DBMS','1','person');
+^C
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher)values('BK2','RMI','1','person');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher)values('BK3','data structure','1','ms graw hill');
+Query OK, 1 row affected (0.45 sec)
+
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher)values('BK4','thermodynamic','2','ms graw hill');
+Query OK, 1 row affected (0.40 sec)
+
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher)values('BK5','AI','3','ms graw hill');
+Query OK, 1 row affected (0.42 sec)
+
+mysql> insert into Book(Bookid,BookName,Authorid,Publisher)values('BK6','Algorithm','4','taylor');
+Query OK, 1 row affected (0.41 sec)
+
+mysql> select * from Book;
++--------+----------------+----------+--------------+----------+
+| Bookid | BookName       | Authorid | Publisher    | branchid |
++--------+----------------+----------+--------------+----------+
+| BK1    | DBMS           | 1        | person       | NULL     |
+| BK2    | RMI            | 1        | person       | NULL     |
+| BK3    | data structure | 1        | ms graw hill | NULL     |
+| BK4    | thermodynamic  | 2        | ms graw hill | NULL     |
+| BK5    | AI             | 3        | ms graw hill | NULL     |
+| BK6    | Algorithm      | 4        | taylor       | NULL     |
++--------+----------------+----------+--------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> insert into branch('B1','MCA','Dr.Vandana');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''B1','MCA','Dr.Vandana')' at line 1
+mysql> insert into Branch values('B1','MCA','Dr.Vandana');
+Query OK, 1 row affected (0.18 sec)
+
+mysql> insert into Branch values('B2','MBA','Dr.iyer');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into Branch values('B3','CSS','Pro.Krishna Mohan');
+Query OK, 1 row affected (0.91 sec)
+
+mysql> insert into Branch values('B4','Mech','Pro.Manajesh');
+Query OK, 1 row affected (0.43 sec)
+
+mysql> insert into Branch values('B4','Civil','Ajesh');
+ERROR 1062 (23000): Duplicate entry 'B4' for key 'Branch.PRIMARY'
+mysql> insert into Branch values('B5','Civil','Ajesh');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> select * ffrom Branch;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ffrom Branch' at line 1
+mysql> select * from Branch;
++----------+------------+-------------------+
+| branchid | Branchname | HOD               |
++----------+------------+-------------------+
+| B1       | MCA        | Dr.Vandana        |
+| B2       | MBA        | Dr.iyer           |
+| B3       | CSS        | Pro.Krishna Mohan |
+| B4       | Mech       | Pro.Manajesh      |
+| B5       | Civil      | Ajesh             |
++----------+------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> update table Book set branchid='B1' where Bookid='BK1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table Book set branchid='B1' where Bookid='BK1'' at line 1
+mysql> update Book set branchid='B1' where Bookid='BK1';
+Query OK, 1 row affected (0.20 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Book;
++--------+----------------+----------+--------------+----------+
+| Bookid | BookName       | Authorid | Publisher    | branchid |
++--------+----------------+----------+--------------+----------+
+| BK1    | DBMS           | 1        | person       | B1       |
+| BK2    | RMI            | 1        | person       | NULL     |
+| BK3    | data structure | 1        | ms graw hill | NULL     |
+| BK4    | thermodynamic  | 2        | ms graw hill | NULL     |
+| BK5    | AI             | 3        | ms graw hill | NULL     |
+| BK6    | Algorithm      | 4        | taylor       | NULL     |
++--------+----------------+----------+--------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> update Book set branchid='B2' where Bookid='BK2';
+Query OK, 1 row affected (0.40 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Book set branchid='B3' where Bookid='BK3';
+Query OK, 1 row affected (0.57 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Book set branchid='B4' where Bookid='BK4';
+Query OK, 1 row affected (0.19 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Book set branchid='B5' where Bookid='BK5';
+Query OK, 1 row affected (0.21 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Book set branchid='B6' where Bookid='BK5';
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`student_details`.`Book`, CONSTRAINT `Book_ibfk_1` FOREIGN KEY (`branchid`) REFERENCES `Branch` (`branchid`))
+mysql> update Book set branchid='B5' where Bookid='BK6';
+Query OK, 1 row affected (0.41 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Book;
++--------+----------------+----------+--------------+----------+
+| Bookid | BookName       | Authorid | Publisher    | branchid |
++--------+----------------+----------+--------------+----------+
+| BK1    | DBMS           | 1        | person       | B1       |
+| BK2    | RMI            | 1        | person       | B2       |
+| BK3    | data structure | 1        | ms graw hill | B3       |
+| BK4    | thermodynamic  | 2        | ms graw hill | B4       |
+| BK5    | AI             | 3        | ms graw hill | B5       |
+| BK6    | Algorithm      | 4        | taylor       | B5       |
++--------+----------------+----------+--------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> insert into Student values('4VP21MC043','Shraddha.A.S','Kadaba','B1','1');
+Query OK, 1 row affected (0.43 sec)
+
+mysql> insert into Student values('4VP21MB03','Ashil','Mani','B2','3');
+Query OK, 1 row affected (0.91 sec)
+
+mysql> insert into Student values('4VP21CS012','Ashil','Derla','B3','4');
+Query OK, 1 row affected (0.19 sec)
+
+mysql> insert into Student values('4VP21Mech19','Anurag','Derla','B4','2');
+Query OK, 1 row affected (0.14 sec)
+
+mysql> insert into Student values('4VP21C56','joshi','Puttur','B5','1');
+Query OK, 1 row affected (0.18 sec)
+
+mysql> insert into Student values('4VP21MC043','Asha','kaladka','B1','2');
+ERROR 1062 (23000): Duplicate entry '4VP21MC043' for key 'Student.PRIMARY'
+mysql> insert into Student values('4VP21MC09','Asha','kaladka','B1','2');
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into Student values('4VP21MC10','gresh','Pune','B1','2');
+Query OK, 1 row affected (0.43 sec)
+
+mysql> insert into Student values('4VP21MC14','Jaivik','Chikmanglore','B1','2');
+
+Query OK, 1 row affected (0.41 sec)
+
+mysql> select * from Student;
++-------------+--------------+--------------+----------+-----+
+| USN         | Name         | Address      | Branchid | sem |
++-------------+--------------+--------------+----------+-----+
+| 4VP21C56    | joshi        | Puttur       | B5       | 1   |
+| 4VP21CS012  | Ashil        | Derla        | B3       | 4   |
+| 4VP21MB03   | Ashil        | Mani         | B2       | 3   |
+| 4VP21MC043  | Shraddha.A.S | Kadaba       | B1       | 1   |
+| 4VP21MC09   | Asha         | kaladka      | B1       | 2   |
+| 4VP21MC10   | gresh        | Pune         | B1       | 2   |
+| 4VP21MC14   | Jaivik       | Chikmanglore | B1       | 2   |
+| 4VP21Mech19 | Anurag       | Derla        | B4       | 2   |
++-------------+--------------+--------------+----------+-----+
+8 rows in set (0.00 sec)
+
+mysql> insert into Borrow values('4VP21C56','BK1','12-10-2021');
+ERROR 1292 (22007): Incorrect date value: '12-10-2021' for column 'Borrowed_date' at row 1
+mysql> insert into Borrow values('4VP21C56','BK1','2021-10-13');
+Query OK, 1 row affected (0.18 sec)
+
+mysql> insert into Borrow values('4VP21CS012','BK2','2021-01-14');
+Query OK, 1 row affected (0.43 sec)
+
+mysql> insert into Borrow values('4VP21MC043','BK4','2021-01-19');
+Query OK, 1 row affected (0.51 sec)
+
+mysql> COMMIT;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+
+Queries:
+(i)
+mysql> select USN, Name,BranchName from Student s,Branch b where s.Branchid=b.Branchid AND BranchName='MCA' AND sem='2';
++-----------+--------+------------+
+| USN       | Name   | BranchName |
++-----------+--------+------------+
+| 4VP21MC09 | Asha   | MCA        |
+| 4VP21MC10 | gresh  | MCA        |
+| 4VP21MC14 | Jaivik | MCA        |
++-----------+--------+------------+
+3 rows in set (0.00 sec)
+
+
+(ii)
+mysql> select Name from Student where USN NOT IN(select USN from Borrow);
++--------+
+| Name   |
++--------+
+| Ashil  |
+| Asha   |
+| gresh  |
+| Jaivik |
+| Anurag |
++--------+
+5 rows in set (0.03 sec)
+
+mysql> select distinct Name from Student where USN NOT IN(select USN from Borrow
+);
++--------+
+| Name   |
++--------+
+| Ashil  |
+| Asha   |
+| gresh  |
+| Jaivik |
+| Anurag |
++--------+
+5 rows in set (0.00 sec)
+
+mysql> select distinct Name from Student,Borrow where USN NOT IN(select USN from
+ Borrow);
+ERROR 1052 (23000): Column 'USN' in IN/ALL/ANY subquery is ambiguous
+mysql> select distinct Name from Student,Borrow where Student.USN NOT IN(select
+USN from Borrow);
++--------+
+| Name   |
++--------+
+| Ashil  |
+| Asha   |
+| gresh  |
+| Jaivik |
+| Anurag |
++--------+
+5 rows in set (0.00 sec)
+
+
+
+
+(iii)
+select Student.USN,Name,BranchName,BookName,AuthorName,Borrowed_Date 
+from Student,Book,Author,Borrow,Branch 
+where Student.USN=Borrow.USN 
+and Student.Branchid=Branch.Branchid 
+and Book.Bookid=Borrow.Bookid 
+and Book.Authorid=Author.Authorid 
+and Student.sem='2' and  Branch.BranchName='MCA';
+
+mysql> insert into borrow values('4VP21MC10','BK1','2021-08-10');
+ERROR 1146 (42S02): Table 'student_details.borrow' doesn't exist
+mysql> insert into Borrow values('4VP21MC10','BK1','2021-08-10');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select Student.USN,Name,BranchName,BookName,AuthorName,Borrowed_Date  from Student,Book,Author,Borrow,Branch  where Student.USN=Borrow.USN  and Student.Branchid=Branch.Branchid  and Book.Bookid=Borrow.Bookid  and Book.Authorid=Author.Authorid  and Student.sem='2' and  Branch.BranchName='MCA';
++-----------+-------+------------+----------+----------------+---------------+
+| USN       | Name  | BranchName | BookName | AuthorName     | Borrowed_Date |
++-----------+-------+------------+----------+----------------+---------------+
+| 4VP21MC10 | gresh | MCA        | DBMS     | Ramez Elamasri | 2021-08-10    |
++-----------+-------+------------+----------+----------------+---------------+
+1 row in set (0.00 sec)
+
+(iv)
+
+mysql> select Student.USN,Name,BranchName,BookName,AuthorName,Borrowed_Date  from Student,Book,Author,Borrow,Branch  where Student.USN=Borrow.USN  and Student.Branchid=Branch.Branchid  and Book.Bookid=Borrow.Bookid  and Book.Authorid=Author.Authorid  and Student.sem='2' and  Branch.BranchName='MCA';
++-----------+-------+------------+----------+----------------+---------------+
+| USN       | Name  | BranchName | BookName | AuthorName     | Borrowed_Date |
++-----------+-------+------------+----------+----------------+---------------+
+| 4VP21MC10 | gresh | MCA        | DBMS     | Ramez Elamasri | 2021-08-10    |
++-----------+-------+------------+----------+----------------+---------------+
+1 row in set (0.00 sec)
+
+(v)
+mysql> select * from Student where USN in( select USN from Borrow group by USN having count(USN)>=2);
++------------+--------------+---------+----------+-----+
+| USN        | Name         | Address | Branchid | sem |
++------------+--------------+---------+----------+-----+
+| 4VP21CS012 | Ashil        | Derla   | B3       | 4   |
+| 4VP21MC043 | Shraddha.A.S | Kadaba  | B1       | 1   |
++------------+--------------+---------+----------+-----+
+
+(vi)
+select * from Student s
+where exists(select br.USN Borrow br,Book bk
+where br.Bookid=bk.Bookid
+and br.USN=s.USN 
+group by Authorid 
+having count(distinct Authorid>1))
+;
+
+
+(vii)
+mysql> select BookName from Book order by BookName desc;
++----------------+
+| BookName       |
++----------------+
+| thermodynamic  |
+| RMI            |
+| DBMS           |
+| data structure |
+| Algorithm      |
+| AI             |
++----------------+
+
+(viii)
+select * from Student s
+where exists(select Br.USN,Publisher 
+from Borrow Br,Book bk
+where Br.Bookid=Bk.Bookid
+AND s.USN=Br.USN
+group by USN
+having count(distinct Publisher)=1)
+
+
+
