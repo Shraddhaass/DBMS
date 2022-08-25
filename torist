@@ -377,6 +377,107 @@ mysql> insert into VISITS values('101','10004','2010-10-12');
 Query OK, 1 row affected (0.01 sec)
 
 mysql> insert into VISITS values('101','10005','2010-10-12');
-Query OK, 1 row affected (0.01 sec)
+Query OK, 1 row affected (0.01 sec
 
+
+mysql> select * from TOURIST_PLACE;
++-------+----------+------------------+------+-----------+
+| TPID  | TNAME    | STATE            | KILO | HISTORY   |
++-------+----------+------------------+------+-----------+
+| 10001 | PILIKULA | KARNATAKA        |  342 | zoo       |
+| 10002 | OOTY     | KARNATAKA        |  160 | beauty    |
+| 10003 | belur    | KARNATAKA        |  270 | monuments |
+| 10004 | mysore   | KARNATAKA        |  160 | palace    |
+| 10005 | om       | GOA              |  320 | beach     |
+| 10006 | Jaipur   | Himachal pradesh |  160 | pink city |
++-------+----------+------------------+------+-----------+
+6 rows in set (0.00 sec)
+
+here we insert 1 OR 2  state having maximum number of tourist place
+Example: Karnataka-P1
+  Karnataka-P2
+  Karnataka-P3
+  Karnataka-P4
+     GOA  -p1  
+     GOA  -p2
+     GOA  -p3
+     GOA  -p4    
+mysql> select * from TOURIST;
++-----+-------------+------+---------+
+| TID | NAME        | AGE  | COUNTRY |
++-----+-------------+------+---------+
+| 101 | Ashil       |   29 | Italy   |
+| 102 | Shithi      |   24 | France  |
+| 103 | Josh ash    |   32 | Turkey  |
+| 104 | Fisham jain |   67 | Maxici  |
+| 105 | shraddha    |   67 | India   |
++-----+-------------+------+---------+
+5 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(i)
+mysql> select MAX(STATE) from TOURIST_PLACE;
++------------+
+| MAX(STATE) |
++------------+
+| KARNATAKA  |
++------------+
+1 row in set (0.00 sec)
+
+
+(i)
+mysql> select MAX(STATE),count(TPID) from TOURIST_PLACE group by STATE order by COUNT(TPID)DESC limit 1;
++------------+-------------+
+| MAX(STATE) | count(TPID) |
++------------+-------------+
+| KARNATAKA  |           4 |
++------------+-------------+
+1 row in set (0.00 sec)
+
+//OR
+
+mysql> select STATE from TOURIST_PLACE group by STATE having COUNT(*) =(select COUNT(*)from TOURIST_PLACE group by STATE order by COUNT(STATE) DESC limit 1);
++-----------+
+| STATE     |
++-----------+
+| KARNATAKA |
++-----------+
+1 row in set (0.01 sec)
+
+
+
+(ii)
+mysql> select * from TOURIST_PLACE where TPID=(select TPID from VISITS group by TPID 
+    -> order by count(TPID) DESC limit 1);
++-------+-------+-----------+------+-----------+
+| TPID  | TNAME | STATE     | KILO | HISTORY   |
++-------+-------+-----------+------+-----------+
+| 10003 | belur | KARNATAKA |  270 | monuments |
++-------+-------+-----------+------+-----------+
+1 row in set (0.00 sec)
+
+
+
+//OR
+
+select TPID,NAME,STATE,COUNT(TID)from TOURIST_PLACE,VISITS  where VISITS.TPID=TOURIST_PLACE.TPID group by VISITS.TPID order by COUNT(VISITS.TPID) DESC LIMIT 1;
 
