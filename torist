@@ -1,0 +1,382 @@
+mcacnj@mcacnj-System-Product-Name:~$ mysql -h 192.168.14.71 -u VP21MC043 -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'VP21MC043'@'192.168.14.18' (using password: YES)
+mcacnj@mcacnj-System-Product-Name:~$ mysql -h 192.168.14.71 -u VP21MC043 -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 21
+Server version: 8.0.30-0ubuntu0.20.04.2 (Ubuntu)
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| VP21MC043_Student  |
+| VP21MC043_college  |
+| VP21MC043_cricket  |
+| information_schema |
+| performance_schema |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use database VP21MC043_cricket
+ERROR 1044 (42000): Access denied for user 'VP21MC043'@'%' to database 'database'
+mysql> use database VP21MC043_cricket
+ERROR 1044 (42000): Access denied for user 'VP21MC043'@'%' to database 'database'
+mysql> use databases VP21MC043_cricket
+ERROR 1044 (42000): Access denied for user 'VP21MC043'@'%' to database 'databases'
+mysql> use VP21MC043_cricket
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-----------------------------+
+| Tables_in_VP21MC043_cricket |
++-----------------------------+
+| MATCHES                     |
+| PLAYER                      |
+| PLAYER_PHONE                |
+| STADIUM                     |
+| TEAM                        |
++-----------------------------+
+5 rows in set (0.00 sec)
+
+mysql> create database VP21MC043_TP
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use database VP21MC043_TP;
+ERROR 1044 (42000): Access denied for user 'VP21MC043'@'%' to database 'database'
+mysql> use database VP21MC043_TP
+ERROR 1044 (42000): Access denied for user 'VP21MC043'@'%' to database 'database'
+mysql> use VP21MC043_TP
+Database changed
+mysql> create table TOURIST(TID varchar(10)primary key,
+    -> NAME varchar(20)NOT NULL,
+    -> AGE int(10),
+    -> COUNTRY varchar(20))
+    -> ;
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> DESC TOURIST;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| TID     | varchar(10) | NO   | PRI | NULL    |       |
+| NAME    | varchar(20) | NO   |     | NULL    |       |
+| AGE     | int         | YES  |     | NULL    |       |
+| COUNTRY | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table TOURIST_PLACE(TID varchar varchar(10)primary key,TNAME varchar(20)NOT NULL,STATE varchar(20)NOT NULL,
+    -> KILO int(10),
+    -> HISTORY varchar(20)NOT NULL));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varchar(10)primary key,TNAME varchar(20)NOT NULL,STATE varchar(20)NOT NULL,
+KILO' at line 1
+mysql> create table TOURIST_PLACE(TID varchar varchar(10)primary key,TNAME varchar(20)NOT NULL,STATE varchar(20)NOT NULL, KILO int(10), HISTORY varchar(20)NOT NULL);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varchar(10)primary key,TNAME varchar(20)NOT NULL,STATE varchar(20)NOT NULL, KILO' at line 1
+mysql> create table TOURIST_PLACE(TPID varchar(10)primary key,TNAME varchar(20)NOT NULL,STATE varchar(20)NOT NULL, KILO int(10), HISTORY varchar(20)NOT NULL);
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> DESC TOURIST_PLACE;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| TPID    | varchar(10) | NO   | PRI | NULL    |       |
+| TNAME   | varchar(20) | NO   |     | NULL    |       |
+| STATE   | varchar(20) | NO   |     | NULL    |       |
+| KILO    | int         | YES  |     | NULL    |       |
+| HISTORY | varchar(20) | NO   |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table VISITS(TID varchar(10),
+    -> TPID varchar(10),
+    -> VDATE DATE)
+    -> ;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DESC VISITS;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| TID   | varchar(10) | YES  |     | NULL    |       |
+| TPID  | varchar(10) | YES  |     | NULL    |       |
+| VDATE | date        | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> update VISITS
+    -> ADD foreign key(TID) references TOURIST(TID),foreign key(TPID) references TOURIST_PLACE(TPID)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ADD foreign key(TID) references TOURIST(TID),foreign key(TPID) references TOURIS' at line 2
+mysql> ADD foreign key(TID) references TOURIST(TID);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ADD foreign key(TID) references TOURIST(TID)' at line 1
+mysql> drop table VISITS;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DESc visits;
+ERROR 1146 (42S02): Table 'VP21MC043_TP.visits' doesn't exist
+mysql> create table VISITS(TID varchar(10), TPID varchar(10), VDATE DATE,
+    -> ADD ADD foreign key(TID) references TOURIST(TID),foreign key(TPID) references TOURIST_PLACE(TPID)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ADD ADD foreign key(TID) references TOURIST(TID),foreign key(TPID) references TO' at line 2
+mysql> create table VISITS(TID varchar(10), TPID varchar(10), VDATE DATE, foreign key(TID) references TOURIST(TID),foreign key(TPID) references TOURIST_PLACE(TPID) );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DESC VISITS;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| TID   | varchar(10) | YES  | MUL | NULL    |       |
+| TPID  | varchar(10) | YES  | MUL | NULL    |       |
+| VDATE | date        | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table EMAIL(TID varchar(10),EMAIL varchar(20),foreign key(TID) references TOURIST(TID));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> DESC EMAIL;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| TID   | varchar(10) | YES  | MUL | NULL    |       |
+| EMAIL | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> DESC TOURIST_PLACE;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| TPID    | varchar(10) | NO   | PRI | NULL    |       |
+| TNAME   | varchar(20) | NO   |     | NULL    |       |
+| STATE   | varchar(20) | NO   |     | NULL    |       |
+| KILO    | int         | YES  |     | NULL    |       |
+| HISTORY | varchar(20) | NO   |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> DESC TOURIST;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| TID     | varchar(10) | NO   | PRI | NULL    |       |
+| NAME    | varchar(20) | NO   |     | NULL    |       |
+| AGE     | int         | YES  |     | NULL    |       |
+| COUNTRY | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into TOURIST('101','Ashil',29,'Italy');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''101','Ashil',29,'Italy')' at line 1
+mysql> insert into TOURIST values('101','Ashil',29,'Italy');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into TOURIST values('102','Shithi',24,'France');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into TOURIST values('103','Josh ash',32,'Turkey');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into TOURIST values('104','Fisham jain',67,'Maxici');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into TOURIST values('105','shraddha',67,'India');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from TOURIST;
++-----+-------------+------+---------+
+| TID | NAME        | AGE  | COUNTRY |
++-----+-------------+------+---------+
+| 101 | Ashil       |   29 | Italy   |
+| 102 | Shithi      |   24 | France  |
+| 103 | Josh ash    |   32 | Turkey  |
+| 104 | Fisham jain |   67 | Maxici  |
+| 105 | shraddha    |   67 | India   |
++-----+-------------+------+---------+
+5 rows in set (0.00 sec)
+
+mysql> DESC TOURIST_PLACE;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| TPID    | varchar(10) | NO   | PRI | NULL    |       |
+| TNAME   | varchar(20) | NO   |     | NULL    |       |
+| STATE   | varchar(20) | NO   |     | NULL    |       |
+| KILO    | int         | YES  |     | NULL    |       |
+| HISTORY | varchar(20) | NO   |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> insert into TOURIST_PLACE('10001','PILIKULA','KARNATAKA',342,'zoo');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''10001','PILIKULA','KARNATAKA',342,'zoo')' at line 1
+mysql> insert into TOURIST_PLACE values('10001','PILIKULA','KARNATAKA',342,'zoo');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into TOURIST_PLACE values('10002','OOTY','KARNATAKA',160,'beauty');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into TOURIST_PLACE values('10003','belur','KARNATAKA',270,'monuments');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into TOURIST_PLACE values('10004','mysore','KARNATAKA',160,'palace');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into TOURIST_PLACE values('10005','om','GOA',320,'beach');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DESC VISITES;
+ERROR 1146 (42S02): Table 'VP21MC043_TP.VISITES' doesn't exist
+mysql> DESC VISITS;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| TID   | varchar(10) | YES  | MUL | NULL    |       |
+| TPID  | varchar(10) | YES  | MUL | NULL    |       |
+| VDATE | date        | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> insert into VISITS values('101','10001','2010-10-12');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into VISITS values('105','10003','2016-11-15');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into VISITS values('105','10004','2019-09-11');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into VISITS values('103','10005','2012-02-01');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into VISITS values('104','10002','2014-04-16');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into VISITS values('102','10002','2014-04-16');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into EMAIL('101','as56@gmail.com');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''101','as56@gmail.com')' at line 1
+mysql> insert into EMAIL values('101','as56@gmail.com');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into EMAIL values('101','ghhsh566@gmail.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into EMAIL values('101','khas34@gmail.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into EMAIL values('102','lskm45@gmail.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into EMAIL values('103','jkhks7657@gmail.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into EMAIL values('104','hks897@gmail.com');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into EMAIL values('105','ifjs45@gmail.com');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into EMAIL values('106','sha2@gmail.com');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`VP21MC043_TP`.`EMAIL`, CONSTRAINT `EMAIL_ibfk_1` FOREIGN KEY (`TID`) REFERENCES `TOURIST` (`TID`))
+mysql> insert into EMAIL values('105','jajj@gmail.com');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select 8 from EMAIL;
++---+
+| 8 |
++---+
+| 8 |
+| 8 |
+| 8 |
+| 8 |
+| 8 |
+| 8 |
+| 8 |
+| 8 |
++---+
+8 rows in set (0.00 sec)
+
+mysql> select * from EMAIL;
++------+---------------------+
+| TID  | EMAIL               |
++------+---------------------+
+| 101  | as56@gmail.com      |
+| 101  | ghhsh566@gmail.com  |
+| 101  | khas34@gmail.com    |
+| 102  | lskm45@gmail.com    |
+| 103  | jkhks7657@gmail.com |
+| 104  | hks897@gmail.com    |
+| 105  | ifjs45@gmail.com    |
+| 105  | jajj@gmail.com      |
++------+---------------------+
+8 rows in set (0.00 sec)
+
+mysql> ESC VISITS;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ESC VISITS' at line 1
+mysql> DESC VISITS;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| TID   | varchar(10) | YES  | MUL | NULL    |       |
+| TPID  | varchar(10) | YES  | MUL | NULL    |       |
+| VDATE | date        | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> select * from VISITS;
++------+-------+------------+
+| TID  | TPID  | VDATE      |
++------+-------+------------+
+| 101  | 10001 | 2010-10-12 |
+| 105  | 10003 | 2016-11-15 |
+| 105  | 10004 | 2019-09-11 |
+| 103  | 10005 | 2012-02-01 |
+| 104  | 10002 | 2014-04-16 |
+| 102  | 10002 | 2014-04-16 |
++------+-------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from TOURIST_PLACE;
++-------+----------+-----------+------+-----------+
+| TPID  | TNAME    | STATE     | KILO | HISTORY   |
++-------+----------+-----------+------+-----------+
+| 10001 | PILIKULA | KARNATAKA |  342 | zoo       |
+| 10002 | OOTY     | KARNATAKA |  160 | beauty    |
+| 10003 | belur    | KARNATAKA |  270 | monuments |
+| 10004 | mysore   | KARNATAKA |  160 | palace    |
+| 10005 | om       | GOA       |  320 | beach     |
++-------+----------+-----------+------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> insert into TOURIST_PLACE values('101','10004','2013-05-17');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into TOURIST_PLACE values('101','10004','2013-05-17');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> 
+mysql> insert into VISITS values('101','10001','2010-10-12');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into VISITS values('101','10004','2010-10-12');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into VISITS values('101','10004','2010-10-12');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into VISITS values('101','10005','2010-10-12');
+Query OK, 1 row affected (0.01 sec)
+
+
