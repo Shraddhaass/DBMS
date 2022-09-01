@@ -481,3 +481,45 @@ mysql> select * from TOURIST_PLACE where TPID=(select TPID from VISITS group by 
 
 select TPID,NAME,STATE,COUNT(TID)from TOURIST_PLACE,VISITS  where VISITS.TPID=TOURIST_PLACE.TPID group by VISITS.TPID order by COUNT(VISITS.TPID) DESC LIMIT 1;
 
+
+
+
+(iii) same place one time
+mysql> select * from TOURIST where TID IN(select TID from VISITS,TOURIST_PLACE where VISITS.TPID=TOURIST_PLACE.TPID AND STATE='KARNATAKA' group by TID having count(STATE)in(select count(STATE) from TOURIST_PLACE where STATE='KARNATAKA'));
++-----+----------+------+---------+
+| TID | NAME     | AGE  | COUNTRY |
++-----+----------+------+---------+
+| 105 | shraddha |   67 | India   |
++-----+----------+------+---------+
+1 row in set (0.00 sec)
+
+//OR   same place in different time(visited two time in same place)
+mysql> select * from TOURIST where TID IN(select TID from VISITS,TOURIST_PLACE where VISITS.TPID=TOURIST_PLACE.TPID AND STATE='KARNATAKA' group by TID having count(DISTINCT TOURIST_PLACE.TPID)in(select count(DISTINCT TPID) from TOURIST_PLACE where STATE='KARNATAKA'));
++-----+----------+------+---------+
+| TID | NAME     | AGE  | COUNTRY |
++-----+----------+------+---------+
+| 105 | shraddha |   67 | India   |
++-----+----------+------+---------+
+1 row in set (0.00 sec)
+
+(iV)
+mysql> select * from TOURIST where TID IN(select TID from VISITS,TOURIST_PLACE where VISITS.TPID=TOURIST_PLACE.TPID AND STATE='KARNATAKA' group by TID having count(DISTINCT STATE)in(select count(DISTINCT STATE) from TOURIST_PLACE where STATE='KARNATAKA'));
++-----+-------------+------+---------+
+| TID | NAME        | AGE  | COUNTRY |
++-----+-------------+------+---------+
+| 101 | Ashil       |   29 | Italy   |
+| 102 | Shithi      |   24 | France  |
+| 104 | Fisham jain |   67 | Maxici  |
+| 105 | shraddha    |   67 | India   |
++-----+-------------+------+---------+
+4 rows in set (0.00 sec)
+
+(V)
+mysql> select * from TOURIST_PLACE where TPID IN (select TPID from VISITS,TOURIST where VISITS.TID=TOURIST.TID  group by TPID having count(DISTINCT COUNTRY)=(select count(distinct COUNTRY) from TOURIST));
++-------+-------+-----------+------+---------+
+| TPID  | TNAME | STATE     | KILO | HISTORY |
++-------+-------+-----------+------+---------+
+| 10002 | OOTY  | KARNATAKA |  160 | beauty  |
++-------+-------+-----------+------+---------+
+1 row in set (0.01 sec)
+
