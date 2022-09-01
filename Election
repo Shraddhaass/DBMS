@@ -1,0 +1,106 @@
+mysql> create database VP21MC043_Election
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use VP21MC043_Election;
+Database changed
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> create table CONSTITUENCY(CONS_id number(20),
+    -> primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS number(10));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number(20),
+primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS ' at line 1
+mysql> create table CONSTITUENCY(CONS_id number(20)primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS number(10));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number(20)primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS nu' at line 1
+mysql> create table CONSTITUENCY(CONS_id number(20)primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS number(10));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number(20)primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS nu' at line 1
+mysql> 
+mysql> 
+mysql> create table CONSTITUENCY(CONS_id number(20)primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS number(10));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number(20)primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS nu' at line 1
+mysql> create table CONSTITUENCY(CONS_id number(20)primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS number(10));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number(20)primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS nu' at line 1
+mysql> 
+mysql> 
+mysql> 
+mysql> 
+mysql> create table CONSTITUENCY(CONS_id varchar(20)primary key,CSNAME varchar(20),CSSTATE varchar(20),NUMBER_OF_VOTERS int(10));
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> DESC CONSTITUENCY;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| CONS_id          | varchar(20) | NO   | PRI | NULL    |       |
+| CSNAME           | varchar(20) | YES  |     | NULL    |       |
+| CSSTATE          | varchar(20) | YES  |     | NULL    |       |
+| NUMBER_OF_VOTERS | int         | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table PARTY(PID int(20)primary key,
+    -> PNAME varchar(20),
+    -> PSYMBOL varchar(10));
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+
+mysql> DESC PARTY;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| PID     | int         | NO   | PRI | NULL    |       |
+| PNAME   | varchar(20) | YES  |     | NULL    |       |
+| PSYMBOL | varchar(10) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table CANDIDATES(CAND_ID int(12)primary key,
+    -> PHONE NUMBER(10),
+    -> AGE int(10),
+    -> STATE varchar(20),
+    -> name varchar(20),
+    -> PID int reference PARTY(PID));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NUMBER(10),
+AGE int(10),
+STATE varchar(20),
+name varchar(20),
+PID int reference ' at line 2
+mysql> create table CANDIDATES(CAND_ID int(12)primary key, PHONE int(10), AGE int(10), STATE varchar(20), name varchar(20), PID int reference
+PARTY(PID));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference PARTY(PID))' at line 1
+mysql> 
+mysql> create table CANDIDATES(CAND_ID int(12)primary key,NAME varchar(20), PHONE int(10), AGE int(10), STATE varchar(20), PID int reference PARTY(PID));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'reference PARTY(PID))' at line 1
+mysql> 
+mysql> create table CANDIDATES(CAND_ID int(12)primary key,NAME varchar(20), PHONE int(10), AGE int(10), STATE varchar(20), PID int references
+PARTY(PID));
+Query OK, 0 rows affected, 3 warnings (0.02 sec)
+
+mysql> DESC CANDIDATES;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| CAND_ID | int         | NO   | PRI | NULL    |       |
+| NAME    | varchar(20) | YES  |     | NULL    |       |
+| PHONE   | int         | YES  |     | NULL    |       |
+| AGE     | int         | YES  |     | NULL    |       |
+| STATE   | varchar(20) | YES  |     | NULL    |       |
+| PID     | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> create table CONTEST(CAND_ID int references CANDIDATES(CAND_ID),CONS_ID int references CONSTITUENCY(CONS_ID));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DESC CONTEST;
++---------+------+------+-----+---------+-------+
+| Field   | Type | Null | Key | Default | Extra |
++---------+------+------+-----+---------+-------+
+| CAND_ID | int  | YES  |     | NULL    |       |
+| CONS_ID | int  | YES  |     | NULL    |       |
++---------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> 
+
+
