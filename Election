@@ -89,7 +89,7 @@ mysql> DESC CANDIDATES;
 +---------+-------------+------+-----+---------+-------+
 6 rows in set (0.00 sec)
 
-mysql> create table CONTEST(CAND_ID int references CANDIDATES(CAND_ID),CONS_ID int references CONSTITUENCY(CONS_ID));
+mysql> create table CONTEST(CAND_ID int(10),CANS_ID int(10),Foreign key(CAND_ID)references  CANDIDATES(CAND_ID),Foreign key(CONS_id)CONS_ID int references CONSTITUENCY(CONS_id);
 Query OK, 0 rows affected (0.03 sec)
 
 mysql> DESC CONTEST;
@@ -102,5 +102,124 @@ mysql> DESC CONTEST;
 2 rows in set (0.00 sec)
 
 mysql> 
+
+mysql> DESC VOTERS;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| VID     | varchar(20) | YES  |     | NULL    |       |
+| NAME    | varchar(20) | YES  |     | NULL    |       |
+| AGE     | int         | YES  |     | NULL    |       |
+| CITY    | varchar(20) | YES  |     | NULL    |       |
+| PINCODE | int         | YES  |     | NULL    |       |
+| STATE   | varchar(20) | YES  |     | NULL    |       |
+| CAND_ID | int         | YES  | MUL | NULL    |       |
+| CONS_id | varchar(20) | YES  | MUL | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+
+mysql> DESC CANDIDATES;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| CAND_ID | int         | NO   | PRI | NULL    |       |
+| NAME    | varchar(20) | YES  |     | NULL    |       |
+| PHONE   | int         | YES  |     | NULL    |       |
+| AGE     | int         | YES  |     | NULL    |       |
+| STATE   | varchar(20) | YES  |     | NULL    |       |
+| PID     | int         | YES  | MUL | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select * from CANDIDATES;
++---------+------------+-----------+------+-----------+------+
+| CAND_ID | NAME       | PHONE     | AGE  | STATE     | PID  |
++---------+------------+-----------+------+-----------+------+
+|    1001 | AshaLATHA  |     89789 |   39 | KARNATAKA |  111 |
+|    1002 | RamKrishna | 789345678 |   45 | KARNATAKA |  222 |
+|    1003 | Jayalatha  | 872309126 |   45 | KARNATAKA |  333 |
+|    1004 | laxhmi     | 873429840 |   45 | KARNATAKA |  444 |
+|    1005 | Amrutha    | 672349012 |   26 | KARNATAKA |  111 |
++---------+------------+-----------+------+-----------+------+
+
+
+mysql> select * from PARTY;
++-----+-------+---------+
+| PID | PNAME | PSYMBOL |
++-----+-------+---------+
+| 111 | KKK   | FLOWER  |
+| 222 | HRS   | CYCLE   |
+| 333 | ULL   | AUTO    |
+| 444 | SRE   | WATER   |
++-----+-------+---------+
+4 rows in set (0.01 sec)
+
+mysql> select * from CONSTITUENCY;
++---------+----------+-----------+------------------+
+| CONS_id | CSNAME   | CSSTATE   | NUMBER_OF_VOTERS |
++---------+----------+-----------+------------------+
+| 100     | BANGLORE | KARNATAKA |              200 |
+| 101     | MANGLORE | KARNATAKA |              400 |
+| 102     | MANDYA   | KARNATAKA |             1000 |
+| 103     | BELGAVI  | KARNATAKA |             2000 |
+| 104     | YADAGIRI | KARNATAKA |             3000 |
++---------+----------+-----------+------------------+
+
+mysql> select * from VOTERS;
++-----+--------+------+----------+---------+-----------+---------+---------+
+| VID | NAME   | AGE  | CITY     | PINCODE | STATE     | CAND_ID | CONS_id |
++-----+--------+------+----------+---------+-----------+---------+---------+
+| V01 | Hitha  |   21 | PUTTUR   |  567343 | KARNATAKA |    1001 | 100     |
+| V02 | KARANA |   28 | SULLIA   |  683456 | KARNATAKA |    1003 | 102     |
+| V03 | asha   |   24 | KADABA   |  783456 | KARNATAKA |    1002 | 101     |
+| V04 | akash  |   24 | MANGLORE |  123456 | KARNATAKA |    1004 | 104     |
++-----+--------+------+----------+---------+-----------+---------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from CONTEST;
++---------+---------+
+| CAND_ID | CONS_id |
++---------+---------+
+|    1001 | 100     |
+|    1002 | 101     |
+|    1003 | 102     |
+|    1004 | 103     |
+|    1005 | 104     |
+|    1001 | 101     |
+|    1002 | 104     |
++---------+---------+
+7 rows in set (0.00 sec
+
+
+
+(i)
+select * from CANDIDATES  
+where CAND_ID in (select CAND_ID from CONTEST,CANDIDATES,CONSTITUENCY 
+where CONTEST.CONS_id=CONSTITUENCY.CONS_id 
+group by CAND_ID
+ having COUNT(distinct(CSSTATE))>1);
+
+
+
+mysql> select * from CANDIDATES where CAND_ID IN(select CAND_ID from CONTEST,CONSTITUENCY  where CONTEST.CONS_id=CONSTITUENCY.CONS_id  group by CAND_ID  having COUNT(distinct(CSSTATE))>1);
++---------+------------+-----------+------+-----------+------+
+| CAND_ID | NAME       | PHONE     | AGE  | STATE     | PID  |
++---------+------------+-----------+------+-----------+------+
+|    1001 | AshaLATHA  |     89789 |   39 | KARNATAKA |  111 |
+|    1002 | RamKrishna | 789345678 |   45 | KARNATAKA |  222 |
++---------+------------+-----------+------+-----------+------+
+2 rows in set (0.01 sec)
+
+
+
+(ii)
+mysql> select MAX(CSSTATE) from CONSTITUENCY;
++--------------+
+| MAX(CSSTATE) |
++--------------+
+| TAMILNADU    |
++--------------+
+1 row in set (0.00 sec)
 
 
