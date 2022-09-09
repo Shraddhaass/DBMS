@@ -1,0 +1,6 @@
+DELIMITER //
+CREATE PROCEDURE new(csname varcahr(20))
+begin
+select NUMBER_OF_VOTERS  from CONSTITUENCY where CSNAME=CSNAME;
+end //
+DELIMITER;
