@@ -222,4 +222,138 @@ mysql> select MAX(CSSTATE) from CONSTITUENCY;
 +--------------+
 1 row in set (0.00 sec)
 
+(iii)
+abc.sql
+DELIMITER //
+create procedure abc(IN VID int(10),IN NAME varchar(20),IN AGE int(10),IN CITY varchar(20),IN PINCODE varchar(10),IN STATE varchar(20))
+begin
+declare msg varchar(20);
+if AGE>=18 then
+insert into VOTERS(VID,NAME,AGE,CITY)values(VID,VNAME,AGE,CITY);
+set msg="row inserted";
+else
+set msg="voter not eligible";
+end if;
+select msg;
+end //
+DELIMITER ;
+
+
+
+
+mysql> source abc.sql;
+Query OK, 0 rows affected, 2 warnings (0.00 sec)
+
+mysql> call abc(1,'Shraddha',17,'puttur');
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE VP21MC043_Election.abc; expected 6, got 4
+mysql> call abc(1,'Shraddha',17,'puttur',34567,'KARNATAKA');
++--------------------+
+| msg                |
++--------------------+
+| voter not eligible |
++--------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+
+
+
+abc.sql
+DELIMITER //
+create procedure abc(IN VID int(10),IN NAME varchar(20),IN AGE int(10),IN CITY varchar(20),IN PINCODE varchar(10),IN STATE varchar(20))
+begin
+declare msg varchar(20);
+if AGE>=18 then
+insert into VOTERS(VID,NAME,AGE,CITY)values(VID,VNAME,AGE,CITY);
+set msg="row inserted";
+else
+set msg="voter not eligible";
+end if;
+select msg;
+end //
+DELIMITER ;
+
+
+
+
+
+contest.sql
+DELIMITER //
+CREATE PROCEDURE new(csname varcahr(20))
+begin
+select NUMBER_OF_VOTERS  from CONSTITUENCY where CSNAME=CSNAME;
+end //
+DELIMITER;
+mysql> CREATE PROCEDURE new(csname varchar(20)) begin select NUMBER_OF_VOTERS  from CONSTITUENCY where CSNAME=csname; end//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call new('kadaba');
+    -> //
++------------------+
+| NUMBER_OF_VOTERS |
++------------------+
+|              200 |
+|              400 |
+|             1000 |
+|             2000 |
+|             3000 |
++------------------+
+5 rows in set (0.00 sec)
+Query OK, 0 rows affected (0.00 sec)
++------------------+
+| NUMBER_OF_VOTERS |
++------------------+
+|              200 |
+|              400 |
+|             1000 |
+|             2000 |
+|             3000 |
++------------------+
+5 rows in set (0.00 sec)
+Query OK, 0 rows affected (0.00 sec)
+
+voter.sql
+
+DELIMITER $$
+create trigger new
+after insert on VOTERS  for each row 
+begin
+update CONSTITUENCY set CONSTITUENCY.NUMBER_OF_VOTERS=CONSTITUENCY.NUMBER_OF_VOTERS+3
+where CONS_id=new.CONS_id;
+end$$
+
+select * from VOTERS;
++-----+--------+------+----------+---------+-----------+---------+---------+
+| VID | NAME   | AGE  | CITY     | PINCODE | STATE     | CAND_ID | CONS_id |
++-----+--------+------+----------+---------+-----------+---------+---------+
+| V01 | Hitha  |   21 | PUTTUR   |  567343 | KARNATAKA |    1001 | 100     |
+| V02 | KARANA |   28 | SULLIA   |  683456 | KARNATAKA |    1003 | 102     |
+| V03 | asha   |   24 | KADABA   |  783456 | KARNATAKA |    1002 | 101     |
+| V04 | akash  |   24 | MANGLORE |  123456 | KARNATAKA |    1004 | 104     |
++-----+--------+------+----------+---------+-----------+---------+---------+
+4 rows in set (0.00 sec)
+
+insert into VOTERS values('V05','Abhijna',18,'Mani',678345,'Maharastra',1001,'102');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into VOTERS values('V06','Anu',23,'arak',756889,'Kerala',1001,'101');
+    -> $$
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from CONSTITUENCY;
+    -> $$
++---------+----------+------------+------------------+
+| CONS_id | CSNAME   | CSSTATE    | NUMBER_OF_VOTERS |
++---------+----------+------------+------------------+
+| 100     | BANGLORE | KARNATAKA  |              200 |
+| 101     | MANGLORE | Andra      |              403 |
+| 102     | MANDYA   | MAHARASTRA |             1003 |
+| 103     | BELGAVI  | TAMILNADU  |             2000 |
+| 104     | YADAGIRI | KERALA     |             3000 |
++---------+----------+------------+------------------+
+5 rows in set (0.00 sec)
+
 
