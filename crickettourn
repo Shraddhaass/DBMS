@@ -278,4 +278,12 @@ having count(MAN_OF_MATCH)=2);
 +-----+-------+-----+------+
 1 row in set (0.00 sec)
 
+(iV)
+mysql> select * from TEAM where TID=(select WINNING_TEAM_ID from MATCHES group by WINNING_TEAM_ID order by COUNT(WINNING_TEAM_ID)DESC limit 1);
++-----+-------+-------+------------+----------+
+| TID | TNAME | COACH | CAPTAIN_ID | CITY     |
++-----+-------+-------+------------+----------+
+| 123 | rcb   | sunil | 1          | banglore |
++-----+-------+-------+------------+----------+
+1 row in set (0.00 sec)
 
