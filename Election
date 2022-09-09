@@ -260,7 +260,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 
 
-
+(iii)
 abc.sql
 DELIMITER //
 create procedure abc(IN VID int(10),IN NAME varchar(20),IN AGE int(10),IN CITY varchar(20),IN PINCODE varchar(10),IN STATE varchar(20))
@@ -279,7 +279,7 @@ DELIMITER ;
 
 
 
-
+(iv)
 contest.sql
 DELIMITER //
 CREATE PROCEDURE new(csname varcahr(20))
@@ -317,6 +317,9 @@ Query OK, 0 rows affected (0.00 sec)
 
 voter.sql
 
+
+
+(v)
 DELIMITER $$
 create trigger new
 after insert on VOTERS  for each row 
