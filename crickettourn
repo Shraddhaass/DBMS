@@ -287,3 +287,32 @@ mysql> select * from TEAM where TID=(select WINNING_TEAM_ID from MATCHES group b
 +-----+-------+-------+------------+----------+
 1 row in set (0.00 sec)
 
+//OR
+select * from TEAM 
+where TID IN(select TID from MATCHES  
+group by TID 
+having COUNT(TID) 
+=(select COUNT(*) from MATCHES 
+ group by TID 
+ order by(TID) 
+ DESC limit 1));
+
+mysql> select * from TEAM 
+    -> where TID IN(select TID from MATCHES  
+    -> group by TID 
+    -> having COUNT(TID) 
+    -> =(select COUNT(*) from MATCHES 
+    ->  group by TID 
+    ->  order by(TID) 
+    ->  DESC limit 1));
++-----+------------+--------+------------+------------+
+| TID | TNAME      | COACH  | CAPTAIN_ID | CITY       |
++-----+------------+--------+------------+------------+
+| 123 | rcb        | sunil  | 1          | banglore   |
+| 124 | CSK        | Laxman | 3          | Chennai    |
+| 125 | KOhili     | setwag | 4          | delhi      |
+| 126 | daredevils | singh  | 2          | rajasthyan |
++-----+------------+--------+------------+------------+
+4 rows in set (0.00 sec)
+
+
